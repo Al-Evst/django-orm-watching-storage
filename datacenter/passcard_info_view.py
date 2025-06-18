@@ -9,21 +9,21 @@ def passcard_info_view(request, passcode):
     passcard = get_object_or_404(Passcard, passcode=passcode)
     visits = Visit.objects.filter(passcard=passcard)
 
-    this_passcard_visits = []
+    passcard_visits = []
     for visit in visits:
-        entered_at_local = localtime(visit.entered_at).strftime('%d-%m-%Y %H:%M')
+        entered_at = localtime(visit.entered_at).strftime('%d-%m-%Y %H:%M')
         duration = get_duration(visit)
-        duration_str = format_duration(duration)
-        is_strange = "Да" if is_visit_long(duration) else "Нет"
+        duration_formatted = format_duration(duration)
+        suspicious = "Да" if is_visit_long(duration) else "Нет"
 
-        this_passcard_visits.append({
-            'entered_at': entered_at_local,
-            'duration': duration_str,
-            'is_strange': is_strange,
+        passcard_visits.append({
+            'entered_at': entered_at,
+            'duration': duration_formatted,
+            'is_strange': suspicious,
         })
 
     context = {
         'passcard': passcard,
-        'this_passcard_visits': this_passcard_visits,
+        'this_passcard_visits': passcard_visits,
     }
     return render(request, 'passcard_info.html', context)
