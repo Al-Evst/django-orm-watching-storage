@@ -13,12 +13,12 @@ def passcard_info_view(request, passcode):
     for visit in visits:
         entered_at = localtime(visit.entered_at).strftime('%d-%m-%Y %H:%M')
         duration = get_duration(visit)
-        duration_formatted = format_duration(duration)
+        formatted_duration = format_duration(duration)
         suspicious = "Да" if is_visit_long(duration) else "Нет"
 
         passcard_visits.append({
             'entered_at': entered_at,
-            'duration': duration_formatted,
+            'duration': formatted_duration,
             'is_strange': suspicious,
         })
 
